@@ -1,3 +1,5 @@
+const projectRoot = require('path').resolve(__dirname, '..')
+process.chdir(projectRoot)
 const fs = require('fs')
 const vm = require('vm')
 const assert = require('node:assert/strict')
@@ -107,7 +109,7 @@ if(process.argv.includes('--battery-100')) values.BATTERY='100u'
 const assetRoot = 'assets/432x514-amazfit-bip-max/'
 const size = file => { const data=fs.readFileSync(assetRoot+file); return [data.readUInt32BE(16),data.readUInt32BE(20)] }
 const draw = []
-const contour = JSON.parse(fs.readFileSync('display-contour.json','utf8'))
+const contour = JSON.parse(fs.readFileSync('references/display-contour.json','utf8'))
 const add = (src,x,y) => {
   const [w,h] = size(src)
   assert(x>=0 && y>=0 && x+w<=432 && y+h<=514,`${src} outside screen`)
@@ -139,5 +141,5 @@ for(const w of widgets.filter(w=>w.show_level===level && w.visible!==false)) {
 if(!sleeping) taps[0].click_func()
 face.onDestroy()
 assert.equal(timers.size,0); assert.equal(subscriptions,0)
-fs.writeFileSync(sleeping?'aod-preview-layout.json':'preview-layout.json',JSON.stringify(draw))
+fs.writeFileSync(sleeping?'previews/aod-preview-layout.json':'previews/preview-layout.json',JSON.stringify(draw))
 console.log(`Passed ${sleeping?'AOD':'awake'} scene: ${taps.length} routes, feedback, lifecycle, battery updates and ${draw.length} image placements (${imperial?'imperial':'metric'}).`)

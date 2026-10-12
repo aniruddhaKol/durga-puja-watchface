@@ -1,7 +1,8 @@
+$projectRoot = Split-Path -Parent $PSScriptRoot
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
-$root = Join-Path $PSScriptRoot 'assets/432x514-amazfit-bip-max'
-$sample = [System.Drawing.Bitmap]::FromFile((Join-Path $PSScriptRoot 'display-outline.png'))
+$root = Join-Path $projectRoot 'assets/432x514-amazfit-bip-max'
+$sample = [System.Drawing.Bitmap]::FromFile((Join-Path $projectRoot 'artwork/display-outline.png'))
 $rows = @()
 $mask = [System.Drawing.Bitmap]::new(432,514)
 for($y=0;$y -lt 514;$y++) {
@@ -26,5 +27,5 @@ foreach($name in @('background.png','aod-background.png')) {
   $g.Dispose();$bmp.Dispose()
 }
 $mask.Dispose()
-ConvertTo-Json -InputObject $rows -Compress | Set-Content (Join-Path $PSScriptRoot 'display-contour.json')
+ConvertTo-Json -InputObject $rows -Compress | Set-Content (Join-Path $projectRoot 'references/display-contour.json')
 Write-Output 'Applied the previous Bip Max outline to both backgrounds and the runtime overlay.'

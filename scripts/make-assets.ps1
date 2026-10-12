@@ -1,6 +1,7 @@
+$projectRoot = Split-Path -Parent $PSScriptRoot
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
-$root = Join-Path $PSScriptRoot 'assets/432x514-amazfit-bip-max'
+$root = Join-Path $projectRoot 'assets/432x514-amazfit-bip-max'
 New-Item -ItemType Directory -Path $root -Force | Out-Null
 function Save-Text($name, $value, $width, $height, $size, $color, $family='Impact', $bold=$false) {
   $bmp = [System.Drawing.Bitmap]::new($width,$height)
@@ -17,15 +18,15 @@ function Save-Text($name, $value, $width, $height, $size, $color, $family='Impac
   $bmp.Save((Join-Path $root $name),[System.Drawing.Imaging.ImageFormat]::Png)
   $format.Dispose();$brush.Dispose();$font.Dispose();$g.Dispose();$bmp.Dispose()
 }
-foreach($pair in @(@('background-source.png','background.png'),@('aod-background-source.png','aod-background.png'))) {
-  $source = [System.Drawing.Image]::FromFile((Join-Path $PSScriptRoot $pair[0]))
+foreach($pair in @(@('artwork/background-source.png','background.png'),@('artwork/aod-background-source.png','aod-background.png'))) {
+  $source = [System.Drawing.Image]::FromFile((Join-Path $projectRoot $pair[0]))
   $bmp = [System.Drawing.Bitmap]::new(432,514)
   $g = [System.Drawing.Graphics]::FromImage($bmp)
   $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
   $g.DrawImage($source,0,0,432,514)
   # Generated edits are confined to lower side panels; preserve the center and upper artwork.
-  $cornerName = if($pair[1] -eq 'background.png'){'bottom-corners-source.png'}else{'aod-bottom-corners-source.png'}
-  $cornerPath = Join-Path $PSScriptRoot $cornerName
+  $cornerName = if($pair[1] -eq 'background.png'){'artwork/bottom-corners-source.png'}else{'artwork/aod-bottom-corners-source.png'}
+  $cornerPath = Join-Path $projectRoot $cornerName
   if(Test-Path -LiteralPath $cornerPath) {
     $edited = [System.Drawing.Image]::FromFile($cornerPath)
     $scaled = [System.Drawing.Bitmap]::new(432,514)
@@ -184,5 +185,5 @@ $g.FillEllipse($brush,13,0,6,6)
 foreach($line in @(@(13,9,10,18),@(13,9,19,13),@(19,13,24,10),@(13,9,7,9),@(7,9,3,15),@(10,18,17,21),@(17,21,13,27),@(10,18,5,26))) { $g.DrawLine($pen,$line[0],$line[1],$line[2],$line[3]) }
 $bmp.Save((Join-Path $root 'aod-step-icon.png'),[System.Drawing.Imaging.ImageFormat]::Png)
 $brush.Dispose();$pen.Dispose();$g.Dispose();$bmp.Dispose()
-& (Join-Path $PSScriptRoot 'fit-display-contour.ps1')
+& (Join-Path $projectRoot 'scripts/fit-display-contour.ps1')
 Write-Output 'Generated both backgrounds, live numeral sprites, touch feedback and 202 battery frames.'
