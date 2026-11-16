@@ -1,8 +1,10 @@
 # Durga Puja Dashboard
 
-Zepp OS watchface for Amazfit Bip Max (432 × 514). Version 1.0.5.
+Zepp OS watchface for Amazfit Bip Max (432 × 514). Version 1.0.6.
 
 ![Preview](previews/watchface-preview.png)
+
+The packaged main and AOD previews use official Bip Max simulator captures. The main preview matches the store submission image, with transparent outer corners.
 
 ![Always-on display](previews/watchface-aod-preview.png)
 

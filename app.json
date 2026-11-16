@@ -5,8 +5,8 @@
     "appName": "Durga Puja Dashboard",
     "appType": "watchface",
     "version": {
-      "code": 6,
-      "name": "1.0.5"
+      "code": 7,
+      "name": "1.0.6"
     },
     "icon": "preview.png",
     "cover": [
